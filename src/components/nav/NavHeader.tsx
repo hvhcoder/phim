@@ -1,96 +1,132 @@
-import React from 'react'
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger
-} from '@/components/ui/navigation-menu'
-import Link from 'next/link'
-
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from '@/components/ui/navigation-menu';
+import Link from 'next/link';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 export default function NavHeader() {
   const menu = [
-    { title: 'Phim bộ', href: '/' },
-    { title: 'Phim lẻ', href: '/' },
-    { title: 'Shows', href: '/' },
-    { title: 'Hoạt hình', href: '/' },
+    {
+      title: 'Phim bộ',
+      href: '/',
+    },
+    {
+      title: 'Phim lẻ',
+      href: '/',
+    },
+    {
+      title: 'Shows',
+      href: '/',
+    },
+    {
+      title: 'Hoạt hình',
+      href: '/',
+    },
     {
       title: 'Thể loại',
+      href: '/',
       submenu: [
-        { name: 'Hành động', href: '/hanh-dong' },
-        { name: 'Kinh dị', href: '/kinh-di' },
-        { name: 'Hài hước', href: '/hai-huoc' },
-        { name: 'Tình cảm', href: '/tinh-cam' }
-      ]
+        {
+          name: 'Hành động',
+          href: '/',
+        },
+        {
+          name: 'Hành động',
+          href: '/',
+        },
+
+        {
+          name: 'Hành động',
+          href: '/',
+        },
+        {
+          name: 'Hành động',
+          href: '/',
+        },
+      ],
     },
     {
       title: 'Quốc gia',
+      href: '/',
       submenu: [
-        { name: 'Việt Nam', href: '/viet-nam' },
-        { name: 'Hàn Quốc', href: '/han-quoc' },
-        { name: 'Mỹ', href: '/my' },
-        { name: 'Nhật Bản', href: '/nhat-ban' }
-      ]
+        {
+          name: 'Hành động',
+          href: '/',
+        },
+        {
+          name: 'Hành động',
+          href: '/',
+        },
+
+        {
+          name: 'Hành động',
+          href: '/',
+        },
+        {
+          name: 'Hành động',
+          href: '/',
+        },
+      ],
     },
-    { title: 'Sắp chiếu', href: '/' }
-  ]
-
-  const ListItem = React.forwardRef<
-    React.ElementRef<'a'>,
-    React.ComponentPropsWithoutRef<'a'>
-  >(({ className, title, children, ...props }, ref) => (
-    <li>
-      <NavigationMenuLink asChild>
-        <Link
-          href={props.href as string}
-          ref={ref}
-          className={`block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground ${className}`}
-          {...props}
-        >
-          <div className='text-sm font-medium leading-none'>{title}</div>
-          <p className='line-clamp-2 text-sm leading-snug text-muted-foreground'>
-            {children}
-          </p>
-        </Link>
-      </NavigationMenuLink>
-    </li>
-  ))
-  ListItem.displayName = 'ListItem'
-
+    {
+      title: 'Sắp chiếu',
+      href: '/',
+    },
+  ];
   return (
     <NavigationMenu>
       <NavigationMenuList className='flex gap-x-3'>
-        {menu.map((item, index) => (
-          <NavigationMenuItem key={index}>
-            {item.submenu ? (
-              <>
-                <NavigationMenuTrigger className='font-medium'>
-                  {item.title}
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className='grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]'>
-                    {item.submenu.map((subItem, subIndex) => (
-                      <ListItem
-                        key={subIndex}
-                        href={subItem.href}
-                        title={subItem.name}
-                        className='font-medium'
-                      />
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </>
-            ) : (
-              <Link href={item.href} passHref>
-                <NavigationMenuLink className='font-medium'>
-                  {item.title}
-                </NavigationMenuLink>
+        {menu.map((item, index) =>
+          item.submenu ? (
+            <DropdownMenu key={index}>
+              <DropdownMenuTrigger className='cursor-pointer focus:outline-none flex items-center text-base font-medium'>
+                {item.title}{' '}
+                <span className='inline-block text-base font-medium ml-3 text-violet-500'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 20 20'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='w-5 h-5'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M19.5 8.25l-7.5 7.5-7.5-7.5'
+                    />
+                  </svg>
+                </span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className='w-[300px] grid grid-cols-3 gap-3'>
+                {item.submenu.map((subItem, subIndex) => (
+                  <DropdownMenuItem key={subIndex}>
+                    <Link href={subItem.href} className='text-base'>
+                      {subItem.name}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <NavigationMenuItem key={index}>
+              <Link href={item.href} className='text-base font-medium'>
+                {item.title}
               </Link>
-            )}
-          </NavigationMenuItem>
-        ))}
+            </NavigationMenuItem>
+          )
+        )}
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 }
